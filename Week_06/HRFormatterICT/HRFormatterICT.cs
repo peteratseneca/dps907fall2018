@@ -17,6 +17,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
+// Students in Prof. McIntyre's Web Services course have permission to use this code as-is, and can modify it
+
 namespace [your-project-name].ServiceLayer
 {
     // Custom media formatter
@@ -25,6 +27,7 @@ namespace [your-project-name].ServiceLayer
     {
         public HRFormatterICT()
         {
+            this.SupportedMediaTypes.Clear();
             this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json+ict"));
         }
 
@@ -45,240 +48,444 @@ namespace [your-project-name].ServiceLayer
                 // First, create a package to hold the results
                 var pkg = new ICTMediaType();
 
-                if (value != null)
+                // Then, get some information about the request
+                // This depends upon the use of the default route template; in WebApiConfig.cs...
+                // routeTemplate: "api/{controller}/{id}"
+                // Also, we must remove any trailing slashes
+
+                var request = HttpContext.Current.Request;
+
+                var requestMethod = request.HttpMethod;
+                var requestUri = request.Path.TrimEnd('/');
+                var requestController = request.Url.Segments[2].TrimEnd('/');
+                var requestId = (request.Url.Segments.Count() > 3) ? request.Url.Segments[3].TrimEnd('/') : "";
+
+                // Next, discover what is in the response by inspecting the type name; it could be
+                // 1. If error - return a package that holds the error message
+                // 2. If collection - return a package that holds a collection
+                // 3. If object - return a package that holds an object
+
+                // Setup for switch-case statement
+                string responseDataType = "";
+
+                if (type.Name == "HttpError")
                 {
-                    // Determine the pattern by gathering query characteristics
+                    responseDataType = "error";
+                }
+                else if (type.Namespace == "System.Collections.Generic")
+                {
+                    responseDataType = "collection";
+                }
+                else
+                {
+                    responseDataType = "object";
+                }
 
-                    // How many segments, after the fixed "/api/ segments
-                    // ==================================================
+                // This is the package generating code...
 
-                    // Will always have something in it
-                    var segments = HttpContext.Current.Request.Url.Segments;
-                    // Remove the first two segments, / and api/
-                    // This will leave only the controller name and whatever follows that
-                    var segmentsCount = segments.Length - 2;
-
-                    // Do we have a query string?
-                    // ==========================
-
-                    var query = HttpContext.Current.Request.QueryString;
-                    // If there's no query string, it does not blow up
-                    var queryCount = query.Count;
-                    // If there's no query string, this value is zero
-
-                    // Get the route data, look for integer "id" property
-                    // ==================================================
-
-                    HttpRequestMessage hrm = HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
-                    var routeData = hrm.GetRouteData();
-                    // Has route template as a string
-                    // Also has or shows "id" as a "parameter"
-
-                    var rdItem = routeData.Values.SingleOrDefault(r => r.Key == "id");
-                    // We'll get back a kvp with the data, or with nulls for key and value
-
-                    var idKeyValue = Convert.ToInt32(rdItem.Value);
-                    // If this is zero, then "id" is not in the route data
-                    // If non-zero, "id" is in the route data, and we have the value
-
-                    // Do we have an integer identifier?
-                    var intId = (!string.IsNullOrEmpty(rdItem.Key)) ? true : false;
-
-                    // How many items are in the response?
-                    // ===================================
-
-                    //var isCollection =
-                    //    value.GetType().GetInterfaces()
-                    //    .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-
-                    var isCollection = type.Namespace == "System.Collections.Generic" ? true : false;
-
-                    var itemCount = 1;
-
-                    if (isCollection)
-                    {
-                        var items = (ICollection)value;
-                        itemCount = items.Count;
-                    }
-
-                    // Continue...
-
-                    var absolutePath = HttpContext.Current.Request.Url.AbsolutePath;
-                    string[] u = absolutePath.Split(new char[] { '/' });
-
-                    // We will use this later (soon)...
-                    var pattern = 0;
-
-                    if (isCollection)
-                    {
-                        // Will have zero or more items
-                        // Will either be a get-all
-                        // Or a get-some-filtered
-
-                        // Come back and fix this later...
-                        pattern = -1;
-
-                        if (segmentsCount == 1 && queryCount == 0 && idKeyValue == 0)
+                switch (responseDataType)
+                {
+                    case "error":
                         {
-                            // Get all
-                            // Zero or more items in "value"
-                            // Exactly 1 segment after "/api/", which suggests a collection
-                            // Does not have a query string 
-                            // Does NOT have the "id" parameter in the route
-                            pattern = 1;
+                            // Link relation for "self"
+                            pkg.links.Add(new link() { rel = "self", href = requestUri, methods = requestMethod });
+                            pkg.count = 0;
+                            pkg.data.Add(value);
                         }
+                        break;
 
-                        if (segmentsCount == 1 && queryCount > 0 && idKeyValue == 0)
+                    case "collection":
                         {
-                            // Get some filtered
-                            // Zero or more items in "value"
-                            // Exactly 1 segment after "/api/", which suggests a collection
-                            // Has a query string 
-                            // Does NOT have the "id" parameter in the route
-                            pattern = 2;
-                        }
+                            // How many items?
+                            pkg.count = (value as ICollection).Count;
 
-                        IEnumerable collection = (IEnumerable)value;
-                        int count = 0;
-                        foreach (var item in collection)
-                        {
-                            count++;
-                            IDictionary<string, object> newItem = new ExpandoObject();
+                            // Transform the data into an enumerable collection
+                            IEnumerable collection = (IEnumerable)value;
 
-                            // Name and value of the field that holds the identifier
-                            var baseClassName = "";
-                            var idValue = 0;
-
-                            // Go through the all the properties in an item
-                            foreach (PropertyInfo prop in item.GetType().GetProperties())
+                            foreach (var item in collection)
                             {
+                                // Create an object that can expand at runtime 
+                                // by dynamically and programmatically adding new properties
+                                IDictionary<string, object> newItem = new ExpandoObject();
+
                                 // N O T I C E 
                                 // ###########
 
-                                // Special processing for the Chinook database
-                                // Each entity class has an identifier with a composite name
-                                // Entity plus Id (e.g. CustomerId)
+                                // We must do special processing for the Chinook database
+                                // Each entity class has an identifier with a composite name,
+                                // "Entity" name plus "Id" (e.g. CustomerId)
+                                // We want to locate this "Entity" plus "Id" property name
+                                // so that we can get the integer identifier for the item in the collection
 
-                                // Algorithm...
+                                // Algorithm... 
                                 // 1. For each property (except "Id"), add it to newItem
                                 // 2. While looking at each property, 
                                 //    check whether its name matches the "Entity" plus "Id" pattern
-                                // 3. If yes, create a property named "Id" with the same value
+                                // 3. If yes, save its value as the item's identifier 
 
-                                // Safety check, which rejects any property named "Id"
-                                if (!(prop.Name == "Id"))
+                                bool shouldContinueLooking = true;
+
+                                // Id value as an integer
+                                int idValueInt = 0;
+
+                                // Go through the all the properties in an item 
+                                // and add them to the expando object
+                                foreach (PropertyInfo prop in item.GetType().GetProperties())
                                 {
-                                    newItem.Add(prop.Name, prop.GetValue(item));
+                                    // Add the property
+                                    newItem.Add(ConfigurePropertyName(prop), prop.GetValue(item));
+
+                                    if (prop.Name == "Id")
+                                    {
+                                        // Save/remember the Id value
+                                        idValueInt = (int)prop.GetValue(item);
+
+                                        // Stop looking, because we have found the identifier
+                                        shouldContinueLooking = false;
+                                    }
+
+                                    // Should we continue looking for the identifier?
+                                    if (shouldContinueLooking)
+                                    {
+                                        // Setup the entity name
+                                        var entityName = "";
+
+                                        // Get the controller name
+                                        // Remove the plural "s", if present
+                                        var possibleBaseType = requestController.TrimEnd('s');
+
+                                        // Compare the result against a number of rules/checks
+                                        if (prop.Name.Length > 2 &&
+                                            prop.Name.EndsWith("Id") &&
+                                            prop.Name.StartsWith(possibleBaseType, true, null) &&
+                                            prop.GetValue(item) is Int32)
+                                        {
+                                            // Boom, we have located the identifier
+                                            entityName = possibleBaseType;
+                                        }
+
+                                        // Now do the comparison, if a match, add an "Id" property
+                                        entityName = entityName + "Id";
+                                        if (prop.Name.ToLower() == entityName.ToLower())
+                                        {
+                                            // We have found the identifier
+                                            idValueInt = (int)prop.GetValue(item);
+                                        }
+                                    }
                                 }
 
-                                // New algorithm...
+                                // Add the links (below)
+                                dynamic o = item;
 
-                                var objName = "";
+                                // ################################################################################
+                                // Get the supported resource URIs for the item...
+                                var allApiDescriptionsForItem = ApiExplorerService.GetApiDescriptionsForUri(requestController, idValueInt.ToString());
 
-                                // Get the all-but-last character of the URI segment for the "controller"
-                                var possibleBaseType = u[2];
+                                // Setup a collection to hold the links
+                                var itemLinks = new List<link>();
 
-                                // Remove the plural "s", if present
-                                if (u[2].EndsWith("s", false, null))
+                                // For each supported resource URI, generate and compose the link
+                                foreach (var apiDescription in allApiDescriptionsForItem)
                                 {
-                                    possibleBaseType = u[2].TrimEnd('s');
+                                    // Fix the URI string
+                                    var itemUri = apiDescription.RelativePath.Replace("{id}", idValueInt.ToString());
+
+                                    // Create and initially configure the link
+                                    var relValue = "self";
+                                    if (apiDescription.HttpMethod.Method == "PUT" || apiDescription.HttpMethod.Method == "DELETE")
+                                    {
+                                        relValue = "edit";
+                                    }
+                                    var newLink = new link() { rel = relValue, href = itemUri, methods = apiDescription.HttpMethod.Method };
+                                    newLink.title = apiDescription.Documentation;
+
+                                    // Get the ActionDescriptor property
+                                    var actionDescriptor = apiDescription.ActionDescriptor as System.Web.Http.Controllers.ReflectedHttpActionDescriptor;
+
+                                    // Look for a "from body" parameter - we need that to render the field list
+                                    var parBind = actionDescriptor.ActionBinding.ParameterBindings.SingleOrDefault(pb => pb.WillReadBody);
+
+                                    // Generate the field list, if we have a parameter binding
+                                    if (parBind != null)
+                                    {
+                                        // Get its data type
+                                        Type parType = parBind.Descriptor.ParameterType;
+
+                                        // Setup a fields collection 
+                                        var fields = new List<field>();
+
+                                        // Generate the field list (different procedure for strings)
+                                        if (parType != null)
+                                        {
+                                            if (parType.Name == "String")
+                                            {
+                                                // Generate our own field
+                                                fields.Add(new field { name = "(none)", type = "string" });
+                                            }
+                                            else
+                                            {
+                                                fields = GenerateFields(parType);
+                                            }
+                                        }
+
+                                        newLink.fields = fields;
+                                    }
+
+                                    // Add the new link to the collection of links
+                                    itemLinks.Add(newLink);
                                 }
 
-                                // Compare the result against a number of rules/checks
-                                if (prop.Name.Length > 2 &&
-                                    prop.Name.EndsWith("Id") &&
-                                    prop.Name.StartsWith(possibleBaseType, true, null) &&
-                                    prop.GetValue(item) is Int32)
-                                {
-                                    // Boom, we have located the identifier
-                                    objName = possibleBaseType;
-                                }
+                                // Add the collection of links to the new item
+                                newItem.Add("links", itemLinks);
 
-                                // We now have the name of the base class 
-                                // (but do we need it for anything?)
-                                baseClassName = objName;
-
-                                // Now do the comparison, if a match, add an "Id" property
-                                objName = objName + "Id";
-                                if (prop.Name.ToLower() == objName.ToLower())
-                                {
-                                    newItem.Add("Id", prop.GetValue(item));
-                                    // Save the value of this identifier to make the link next/below
-                                    idValue = (int)prop.GetValue(item);
-                                }
+                                // Add the new item to the package's "data" property
+                                pkg.data.Add(newItem);
                             }
 
-                            // Add the links (below)
-                            dynamic o = item;
+                            // ################################################################################
+                            // Generate links for the collection URI
 
-                            // Get the supported HTTP methods for the item...
+                            var allApiDescriptionsForColl = ApiExplorerService
+                                .GetApiDescriptionsForUri(requestController, null);
 
-                            // Setup...
-                            object idValueObject;
-                            int idValueInt = 0;
-                            if (newItem.TryGetValue("Id", out idValueObject))
+                            // Setup a collection to hold the links
+                            var pkgLinks = new List<link>();
+
+                            // For each supported resource URI, generate and compose the link
+                            foreach (var apiDescription in allApiDescriptionsForColl)
                             {
-                                idValueInt = (int)idValueObject;
+                                // Fix the URI string
+                                var itemUri = apiDescription.RelativePath.Replace("{id}", 0.ToString());
+
+                                // Create and initially configure the link
+                                var relValue = "self";
+                                if (apiDescription.HttpMethod.Method == "POST") { relValue = "edit"; }
+                                var newLink = new link() { rel = relValue, href = itemUri, methods = apiDescription.HttpMethod.Method };
+                                newLink.title = apiDescription.Documentation;
+
+                                // Get the ActionDescriptor property
+                                var actionDescriptor = apiDescription.ActionDescriptor as System.Web.Http.Controllers.ReflectedHttpActionDescriptor;
+
+                                Type parType = null;
+
+                                // Look for a "from body" parameter - we need that to render the field list
+                                var parBind = actionDescriptor.ActionBinding.ParameterBindings.SingleOrDefault(pb => pb.WillReadBody);
+                                if (parBind != null)
+                                {
+                                    parType = parBind.Descriptor.ParameterType;
+                                }
+
+                                // Alternatively, look for a "from URI" parameter, as we can use that too
+                                if (apiDescription.ParameterDescriptions.Count == 1)
+                                {
+                                    var pd = apiDescription.ParameterDescriptions[0];
+                                    if (pd.Source == System.Web.Http.Description.ApiParameterSource.FromUri)
+                                    {
+                                        // Yay, can use the binding and the type
+                                        parBind = actionDescriptor.ActionBinding.ParameterBindings[0];
+                                        parType = pd.ParameterDescriptor.ParameterType;
+                                    }
+                                }
+
+                                // Generate the field list, if we have a parameter binding
+                                if (parBind != null)
+                                {
+                                    // Get its data type
+                                    //Type parType = parBind.Descriptor.ParameterType;
+
+                                    // Setup a fields collection 
+                                    var fields = new List<field>();
+
+                                    // Generate the field list (different procedure for strings)
+                                    if (parType != null)
+                                    {
+                                        if (parType.Name == "String")
+                                        {
+                                            // Generate our own field
+                                            fields.Add(new field { name = "(none)", type = "string" });
+                                        }
+                                        else
+                                        {
+                                            fields = GenerateFields(parType);
+                                        }
+                                    }
+
+                                    newLink.fields = fields;
+                                }
+
+                                // Add the new link to the collection of links
+                                pkgLinks.Add(newLink);
                             }
 
-                            // Get the item methods and add a link
-                            var itemMethods = string.Join(",", ApiExplorerService.GetSupportedMethods(u[2], idValueInt.ToString()));
-                            newItem.Add("Link", new link() { rel = "item", href = string.Format("{0}/{1}", absolutePath, idValueInt), methods = itemMethods });
+                            // Add the collection of links to the package
+                            pkg.links = pkgLinks;
 
+                        }
+                        break;
+
+                    case "object":
+                        {
+                            // No, NOT a collection
+
+                            IDictionary<string, object> newItem = new ExpandoObject();
+
+                            // Go through the all the properties in an item
+                            foreach (PropertyInfo prop in value.GetType().GetProperties())
+                            {
+                                newItem.Add(ConfigurePropertyName(prop), prop.GetValue(value));
+                            }
+
+                            pkg.count = 1;
                             pkg.data.Add(newItem);
+
+                            // ################################################################################
+                            // Get the supported resource URIs for the item...
+                            var allApiDescriptionsForItem = ApiExplorerService.GetApiDescriptionsForUri(requestController, requestId.ToString());
+
+                            // Setup a collection to hold the links
+                            var itemLinks = new List<link>();
+
+                            // For each supported resource URI, generate and compose the link
+                            foreach (var apiDescription in allApiDescriptionsForItem)
+                            {
+                                // Fix the URI string
+                                var itemUri = apiDescription.RelativePath.Replace("{id}", requestId.ToString());
+
+                                // Create and initially configure the link
+                                var relValue = "self";
+                                if (apiDescription.HttpMethod.Method == "PUT" || apiDescription.HttpMethod.Method == "DELETE")
+                                {
+                                    relValue = "edit";
+                                }
+                                var newLink = new link() { rel = relValue, href = itemUri, methods = apiDescription.HttpMethod.Method };
+                                newLink.title = apiDescription.Documentation;
+
+                                // Get the ActionDescriptor property
+                                var actionDescriptor = apiDescription.ActionDescriptor as System.Web.Http.Controllers.ReflectedHttpActionDescriptor;
+
+                                // Look for a "from body" parameter - we need that to render the field list
+                                var parBind = actionDescriptor.ActionBinding.ParameterBindings.SingleOrDefault(pb => pb.WillReadBody);
+
+                                // Generate the field list, if we have a parameter binding
+                                if (parBind != null)
+                                {
+                                    // Get its data type
+                                    Type parType = parBind.Descriptor.ParameterType;
+
+                                    // Setup a fields collection 
+                                    var fields = new List<field>();
+
+                                    // Generate the field list (different procedure for strings)
+                                    if (parType != null)
+                                    {
+                                        if (parType.Name == "String")
+                                        {
+                                            // Generate our own field
+                                            fields.Add(new field { name = "(none)", type = "string" });
+                                        }
+                                        else
+                                        {
+                                            fields = GenerateFields(parType);
+                                        }
+                                    }
+
+                                    newLink.fields = fields;
+                                }
+
+                                // Add the new link to the collection of links
+                                itemLinks.Add(newLink);
+                            }
+
+                            pkg.links = itemLinks;
+
+                            // ################################################################################
+                            // Generate links for the collection URI
+
+                            var allApiDescriptionsForColl = ApiExplorerService
+                                .GetApiDescriptionsForUri(requestController, null);
+
+                            // Setup a collection to hold the links
+                            var pkgLinks = new List<link>();
+
+                            // For each supported resource URI, generate and compose the link
+                            foreach (var apiDescription in allApiDescriptionsForColl)
+                            {
+                                // Fix the URI string
+                                //var itemUri = apiDescription.RelativePath.Replace("{id}", idValueInt.ToString());
+                                var itemUri = apiDescription.RelativePath.Replace("{id}", 0.ToString());
+
+                                // Create and initially configure the link
+                                var relValue = "collection";
+                                if (apiDescription.HttpMethod.Method == "POST") { relValue = "edit"; }
+                                var newLink = new link() { rel = relValue, href = itemUri, methods = apiDescription.HttpMethod.Method };
+                                newLink.title = apiDescription.Documentation;
+
+                                // Get the ActionDescriptor property
+                                var actionDescriptor = apiDescription.ActionDescriptor as System.Web.Http.Controllers.ReflectedHttpActionDescriptor;
+
+                                Type parType = null;
+
+                                // Look for a "from body" parameter - we need that to render the field list
+                                var parBind = actionDescriptor.ActionBinding.ParameterBindings.SingleOrDefault(pb => pb.WillReadBody);
+                                if (parBind != null)
+                                {
+                                    parType = parBind.Descriptor.ParameterType;
+                                }
+
+                                // Alternatively, look for a "from URI" parameter, as we can use that too
+                                if (apiDescription.ParameterDescriptions.Count == 1)
+                                {
+                                    var pd = apiDescription.ParameterDescriptions[0];
+                                    if (pd.Source == System.Web.Http.Description.ApiParameterSource.FromUri)
+                                    {
+                                        // Yay, can use the binding and the type
+                                        parBind = actionDescriptor.ActionBinding.ParameterBindings[0];
+                                        parType = pd.ParameterDescriptor.ParameterType;
+                                    }
+                                }
+
+                                // Generate the field list, if we have a parameter binding
+                                if (parBind != null)
+                                {
+                                    // Get its data type
+                                    //Type parType = parBind.Descriptor.ParameterType;
+
+                                    // Setup a fields collection 
+                                    var fields = new List<field>();
+
+                                    // Generate the field list (different procedure for strings)
+                                    if (parType != null)
+                                    {
+                                        if (parType.Name == "String")
+                                        {
+                                            // Generate our own field
+                                            fields.Add(new field { name = "(none)", type = "string" });
+                                        }
+                                        else
+                                        {
+                                            fields = GenerateFields(parType);
+                                        }
+                                    }
+
+                                    newLink.fields = fields;
+                                }
+
+                                // Add the new link to the collection of links
+                                pkgLinks.Add(newLink);
+                            }
+
+                            // Add the collection of links to the package
+                            pkg.links.AddRange(pkgLinks);
+
+
                         }
+                        break;
 
-                        // Add a link relation for 'self'
-                        pkg.links.Add(new link() { rel = "self", href = absolutePath, methods = "GET" });
-
-                        // Link relation for 'create', if supported
-                        // Hard-coded for now - we want to make this discoverable
-
-                        // TODO - make this discoverable ! ! ! 
-
-                        if (ApiExplorerService.GetSupportedMethods(u[2], null).Contains("POST"))
-                        {
-                            var postLink = new link() { rel = "create", href = absolutePath, methods = "POST" };
-                            postLink.fields = new List<field>();
-                            postLink.fields.Add(new field { name = "FirstName", type = "string" });
-                            postLink.fields.Add(new field { name = "LastName", type = "string" });
-                            postLink.fields.Add(new field { name = "Age", type = "int" });
-
-                            pkg.links.Add(postLink);
-                        }
-
-                        pkg.count = count;
-                    }
-                    else
-                    {
-                        // No, NOT a collection
-
-                        // Set pattern (come back to this later and fix)
-                        pattern = -1;
-
-                        IDictionary<string, object> newItem = new ExpandoObject();
-
-                        // Go through the all the properties in an item
-                        foreach (PropertyInfo prop in value.GetType().GetProperties())
-                        {
-                            newItem.Add(prop.Name, prop.GetValue(value));
-                        }
-
-                        var itemMethods = string.Join(",", ApiExplorerService.GetSupportedMethods(u[2], u[3]));
-                        newItem.Add("Link", new link() { rel = "self", href = absolutePath, methods = itemMethods });
-
-                        // Link relation for 'self'
-                        pkg.links.Add(new link() { rel = "self", href = absolutePath, methods = itemMethods });
-
-                        var controllerMethods = string.Join(",", ApiExplorerService.GetSupportedMethods(u[2], null));
-
-                        // Link relation for 'collection'
-                        pkg.links.Add(new link() { rel = "collection", href = string.Format("/{0}", u[1]), methods = controllerMethods });
-
-                        pkg.count = 1;
-                        pkg.data.Add(newItem);
-                    }
+                    default:
+                        break;
                 }
+
+                // Deliver the package...
 
                 string json = JsonConvert.SerializeObject(pkg, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
                 var buffer = Encoding.Default.GetBytes(json);
@@ -287,6 +494,115 @@ namespace [your-project-name].ServiceLayer
                 writeStream.Close();
             }
         }
+
+        /// <summary>
+        /// Generate the fields for a resource URI
+        /// </summary>
+        /// <param name="parType">Type of the object that will be inspected</param>
+        /// <returns>Collection of field objects</returns>
+        private List<field> GenerateFields(Type parType)
+        {
+            // Setup a collection to hold the type's fields
+            var fields = new List<field>();
+
+            // Now, go through all the properties in the class/type
+            foreach (var propInfo in parType.GetProperties())
+            {
+                string description = "(none)";
+                string usage = "";
+                foreach (var customAttribute in propInfo.CustomAttributes)
+                {
+                    // Look for custom attributes 
+                    // (data annotations, Required, StringLength (max and min)...)
+                    var attrName = customAttribute.AttributeType.Name;
+                    var maxValue = customAttribute.ConstructorArguments.Count > 0 ? customAttribute.ConstructorArguments[0].Value.ToString() : "";
+                    var minValue = "";
+
+                    // Look for named arguments
+                    CustomAttributeNamedArgument minArg;
+
+                    if (customAttribute.NamedArguments.Count > 0)
+                    {
+                        if (customAttribute.NamedArguments[0].MemberName == "MinimumLength")
+                        {
+                            minArg = customAttribute.NamedArguments[0];
+                            minValue = customAttribute.NamedArguments[0].TypedValue.Value.ToString();
+                        }
+                    }
+
+                    // Clean up the strings
+
+                    if (attrName == "RangeAttribute")
+                    {
+                        minValue = customAttribute.ConstructorArguments[0].Value.ToString();
+                        maxValue = customAttribute.ConstructorArguments[1].Value.ToString();
+                        usage = $"Value is from {minValue} to {maxValue}. ";
+                    }
+
+                    if (attrName == "RequiredAttribute")
+                    {
+                        usage = "Required. ";
+                    }
+
+                    if (attrName == "DescriptionAttribute")
+                    {
+                        description = maxValue;
+                    }
+
+                    if (attrName == "StringLengthAttribute")
+                    {
+                        usage = $"{usage}Maximum length is {maxValue}. ";
+
+                        if (minValue.Length > 0)
+                        {
+                            usage = $"{usage}Minimum length is {minValue}. ";
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(usage)) { usage = "(none)"; }
+
+                // Type cleanup; convert .NET Framework names to generic names
+                var propType = propInfo.PropertyType.Name;
+                var fieldType = propType;
+
+                if (propType == "Int32") { fieldType = "integer"; }
+                if (propType == "Nullable`1") { fieldType = "integer"; }
+                if (propType == "DateTime") { fieldType = "ISO 8601 date and time"; }
+
+                // Finally, add the field
+                fields.Add(new field
+                {
+                    name = ConfigurePropertyName(propInfo),
+                    type = fieldType.ToLower(),
+                    description = description,
+                    usage = usage
+                });
+
+            }
+
+            // All done, return the collection of fields
+            return fields;
+        }
+
+        /// <summary>
+        /// Look for and configure a custom property name
+        /// </summary>
+        /// <param name="prop">Property information object</param>
+        /// <returns>String that is set with a DisplayAttribute</returns>
+        private string ConfigurePropertyName(PropertyInfo prop)
+        {
+            var customAttr = prop.CustomAttributes.SingleOrDefault(ca => ca.AttributeType.Name == "DisplayAttribute");
+            if (customAttr == null)
+            {
+                return prop.Name;
+            }
+            else
+            {
+                return customAttr.NamedArguments[0].TypedValue.Value.ToString();
+            }
+        }
+
     }
 
 
@@ -296,10 +612,42 @@ namespace [your-project-name].ServiceLayer
     // Shout out to Jef Claes for the inspiration and design
     // http://www.jefclaes.be/2012/09/supporting-options-verb-in-aspnet-web.html
 
-    // Students in Prof. McIntyre's Web Services course have permission to use this code as-is
-
     public class ApiExplorerService
     {
+        // Get supported ApiDescriptions for item or collection URI
+        public static IEnumerable<System.Web.Http.Description.ApiDescription> GetApiDescriptionsForUri(string controllerRequested, string idRequested)
+        {
+            // Get a reference to the API Explorer
+            var apiExplorer = GlobalConfiguration.Configuration.Services.GetApiExplorer();
+
+            // Collector for the supported methods
+            IEnumerable<System.Web.Http.Description.ApiDescription> supportedApiDescriptions = null;
+
+            supportedApiDescriptions = apiExplorer.ApiDescriptions.Where(d =>
+            {
+                // In the controller class, look for methods that match
+                // the requested controller name and the presence of an id parameter
+                var controller = d.ActionDescriptor.ControllerDescriptor.ControllerName;
+                var idParameter = d.ParameterDescriptions.SingleOrDefault(p => p.Name == "id");
+                bool doesControllerMatch = string.Equals(controller, (string)controllerRequested, StringComparison.OrdinalIgnoreCase);
+                bool hasId = (idParameter == null) ? false : true;
+
+                if (idRequested == null)
+                {
+                    // We want collection data
+                    return doesControllerMatch & !hasId;
+                }
+                else
+                {
+                    // We want item data
+                    return doesControllerMatch & hasId;
+                }
+
+            });
+
+            return supportedApiDescriptions;
+        }
+
         public static IEnumerable<string> GetSupportedMethods(string controllerRequested, string idRequested)
         {
             // Get a reference to the API Explorer
@@ -436,26 +784,23 @@ namespace [your-project-name].ServiceLayer
 
     // This is a "link" class that describes a link relation
 
-    // All symbols are lower-case, to conform to web standards
+    // All symbols (property names) are lower-case, to conform to web standards
 
     /// <summary>
     /// A hypermedia link
     /// </summary>
     public class link
     {
-        public link()
-        {
-            //fields = new List<field>();
-        }
-
         /// <summary>
         /// Relation kind
         /// </summary>
+        // You configure this value
         public string rel { get; set; } = "";
 
         /// <summary>
         /// Hypermedia reference URL segment
         /// </summary>
+        // You configure this value
         public string href { get; set; } = "";
 
         // New added properties...
@@ -469,24 +814,29 @@ namespace [your-project-name].ServiceLayer
         /// <summary>
         /// Internet media type, for content negotiation
         /// </summary>
+        // This value is configured by the ApiExplorer
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string type { get; set; }
 
         /// <summary>
         /// HTTP method(s) which can be used
         /// </summary>
+        // This value is configured by the ApiExplorer
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string methods { get; set; }
 
         /// <summary>
         /// Human-readable title label
         /// </summary>
+        // This value is configured by an XML Documentation Comment on the controller method
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string title { get; set; }
 
         /// <summary>
         /// Values which must be sent with the request
         /// </summary>
+        // We do NOT want to initialize the value of this property in the constructor
+        // If it is truly null, then we do not want it to be rendered
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ICollection<field> fields { get; set; }
     }
@@ -496,11 +846,14 @@ namespace [your-project-name].ServiceLayer
         /// <summary>
         /// Name of the field
         /// </summary>
+        // This value is from the resource model class
+        // It is the property name, or the value of the DisplayAttribute
         public string name { get; set; } = "";
 
         /// <summary>
         /// Data type of the field
         /// </summary>
+        // This value is configured by the ApiExplorer
         public string type { get; set; } = "";
 
         /// <summary>
@@ -508,6 +861,21 @@ namespace [your-project-name].ServiceLayer
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string value { get; set; }
+
+        /// <summary>
+        /// Description, purpose
+        /// </summary>
+        // This value is from the resource model class
+        // It is the value of the DescriptionAttribute
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string description { get; set; }
+
+        /// <summary>
+        /// How to use, constraints, considerations
+        /// </summary>
+        // This value is configured by the ApiExplorer
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string usage { get; set; }
     }
 
 }

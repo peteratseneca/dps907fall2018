@@ -1,0 +1,1725 @@
+{
+  "timestamp": "2018-10-27T07:33:13.0885492-04:00",
+  "version": "1.0.0",
+  "count": 13,
+  "data": [
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 999,
+      "name": "Still",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 313182,
+      "bytes": 10323157,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1000,
+      "name": "What If I Do?",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 302994,
+      "bytes": 9929799,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1001,
+      "name": "Miracle",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 209684,
+      "bytes": 6877994,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1002,
+      "name": "Another Round",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 265848,
+      "bytes": 8752670,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1003,
+      "name": "Friend Of A Friend",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 193280,
+      "bytes": 6355088,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1004,
+      "name": "Over And Out",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 316264,
+      "bytes": 10428382,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1005,
+      "name": "On The Mend",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 271908,
+      "bytes": 9071997,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1006,
+      "name": "Virginia Moon",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 229198,
+      "bytes": 7494639,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1007,
+      "name": "Cold Day In The Sun",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 200724,
+      "bytes": 6596617,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 1,
+        "Name": "MPEG audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 1008,
+      "name": "Razor",
+      "albumId": 80,
+      "mediaTypeId": 1,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 293276,
+      "bytes": 9721373,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 5,
+        "Name": "AAC audio file"
+      },
+      "genre": {
+        "GenreId": 23,
+        "Name": "Alternative"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 3504,
+      "name": "In Your Honor",
+      "albumId": 80,
+      "mediaTypeId": 5,
+      "genreId": 23,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 313181,
+      "bytes": 10323156,
+      "unitPrice": 0.99,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 5,
+        "Name": "AAC audio file"
+      },
+      "genre": {
+        "GenreId": 23,
+        "Name": "Alternative"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 3505,
+      "name": "No Way Back",
+      "albumId": 80,
+      "mediaTypeId": 5,
+      "genreId": 23,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 313180,
+      "bytes": 10323155,
+      "unitPrice": 1.29,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    },
+    {
+      "mediaType": {
+        "MediaTypeId": 5,
+        "Name": "AAC audio file"
+      },
+      "genre": {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      "album": {
+        "Artist": {
+          "ArtistId": 84,
+          "Name": "Foo Fighters"
+        },
+        "AlbumId": 80,
+        "Title": "In Your Honor [Disc 2]",
+        "ArtistId": 84
+      },
+      "trackId": 3506,
+      "name": "Best of You",
+      "albumId": 80,
+      "mediaTypeId": 5,
+      "genreId": 1,
+      "composer": "Dave Grohl, Taylor Hawkins, Nate Mendel, Chris Shiflett/FOO FIGHTERS",
+      "milliseconds": 313180,
+      "bytes": 10323155,
+      "unitPrice": 1.29,
+      "links": [
+        {
+          "rel": "self",
+          "href": "api/albums/80/withartist",
+          "methods": "GET",
+          "title": "One specific album, and its associated artist, by its identifier"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "GET",
+          "title": "All tracks for a specific album"
+        },
+        {
+          "rel": "self",
+          "href": "api/albums/80/tracks",
+          "methods": "POST",
+          "title": "Add a new track object for a specific album",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "description": "Track name",
+              "usage": "Required. Maximum length is 200. "
+            },
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "mediaTypeId",
+              "type": "integer",
+              "description": "Media type identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "genreId",
+              "type": "integer",
+              "description": "Genre identifier",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "composer",
+              "type": "string",
+              "description": "Composer name(s)",
+              "usage": "Maximum length is 220. "
+            },
+            {
+              "name": "milliseconds",
+              "type": "integer",
+              "description": "Length (time) in milliseconds",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "bytes",
+              "type": "integer",
+              "description": "Size of media in bytes",
+              "usage": "Value is from 1 to 2147483647. "
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "description": "Unit price of track",
+              "usage": "Value is from 0.99 to 9.99. "
+            }
+          ]
+        },
+        {
+          "rel": "self",
+          "href": "api/Albums/80",
+          "methods": "GET",
+          "title": "One specific album, by its identifier"
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "PUT",
+          "title": "Change the title of an album",
+          "fields": [
+            {
+              "name": "albumId",
+              "type": "integer",
+              "description": "Album identifier",
+              "usage": "(none)"
+            },
+            {
+              "name": "title",
+              "type": "string",
+              "description": "Album title",
+              "usage": "Required. Maximum length is 160. "
+            }
+          ]
+        },
+        {
+          "rel": "edit",
+          "href": "api/Albums/80",
+          "methods": "DELETE",
+          "title": "Delete an album"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "api/Albums",
+      "methods": "GET",
+      "title": "All albums, sorted by title"
+    },
+    {
+      "rel": "edit",
+      "href": "api/Albums",
+      "methods": "POST",
+      "title": "Add a new album object",
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "Album title",
+          "usage": "Required. Maximum length is 160. "
+        },
+        {
+          "name": "artistId",
+          "type": "integer",
+          "description": "Identifier of the album's artist",
+          "usage": "(none)"
+        }
+      ]
+    }
+  ]
+}
