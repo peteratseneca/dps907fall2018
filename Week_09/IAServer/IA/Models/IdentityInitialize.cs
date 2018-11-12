@@ -19,9 +19,13 @@ namespace IA.Models
             var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(ds));
 
             // Add the user(s) that the app needs when loaded for the first time
+            // Copy-paste a code block below, and edit as necessary
             // Change any of the data below to better match your app's needs
-            if (userManager.Users.Count() == 0)
+            // Notice - the app already includes the "uam" and "dev" user accounts
+            // That's why the comparison below uses the value "2" 
+            if (userManager.Users.Count() == 2)
             {
+                /*
                 // User account manager...
                 var uam = new ApplicationUser { UserName = "uam@example.com", Email = "uam@example.com" };
                 var uamResult = await userManager.CreateAsync(uam, "Password123!");
@@ -45,6 +49,7 @@ namespace IA.Models
                     await userManager.AddClaimAsync(dev.Id, new Claim(ClaimTypes.GivenName, "App"));
                     await userManager.AddClaimAsync(dev.Id, new Claim(ClaimTypes.Surname, "Developer"));
                 }
+                */
             }
         }
 
