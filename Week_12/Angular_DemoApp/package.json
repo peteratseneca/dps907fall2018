@@ -1,0 +1,45 @@
+{
+  "name": "angular5-http-demo",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng build && node app.js",
+    "build": "rimraf dist && webpack --config config/webpack.dev.js --progress --profile --bail"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^5.2.11",
+    "@angular/common": "^5.2.11",
+    "@angular/compiler": "^5.2.11",
+    "@angular/core": "^5.2.11",
+    "@angular/forms": "^5.2.11",
+    "@angular/http": "^5.2.11",
+    "@angular/platform-browser": "^5.2.11",
+    "@angular/platform-browser-dynamic": "^5.2.11",
+    "@angular/router": "^5.2.11",
+    "body-parser": "^1.18.2",
+    "core-js": "^2.5.7",
+    "express": "^4.16.3",
+    "rxjs": "^5.5.12",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "@angular/cli": "^1.7.4",
+    "@angular/compiler-cli": "^5.2.11",
+    "@types/angular": "^1.6.50",
+    "@types/core-js": "0.9.36",
+    "@types/node": "^6.0.117",
+    "angular2-template-loader": "^0.6.0",
+    "awesome-typescript-loader": "^3.5.0",
+    "extract-text-webpack-plugin": "2.0.0-beta.5",
+    "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.16.1",
+    "rimraf": "^2.5.2",
+    "ts-node": "~3.2.0",
+    "tslint": "~5.8.0",
+    "typescript": "~2.4.2",
+    "webpack": "^3.12.0",
+    "webpack-merge": "^3.0.0"
+  }
+}
